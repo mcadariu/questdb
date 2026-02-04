@@ -36,6 +36,7 @@ import static io.questdb.griffin.engine.functions.groupby.ApproxPercentileDouble
 import static io.questdb.griffin.engine.functions.groupby.ApproxPercentileDoubleGroupByFunctionFactory.checkPercentile;
 
 public class ApproxPercentileLongGroupByFunctionFactory implements FunctionFactory {
+    public static boolean useParallel = true;
 
     @Override
     public String getSignature() {
@@ -65,6 +66,8 @@ public class ApproxPercentileLongGroupByFunctionFactory implements FunctionFacto
         if (precision > 2) {
             return new ApproxPercentileLongPackedGroupByFunction(exprFunc, percentileFunc, precision, position);
         }
-        return new ApproxPercentileLongGroupByFunction(exprFunc, percentileFunc, precision, position);
+        return useParallel
+                ? new ApproxPercentileLongParallelGroupByFunction(exprFunc, percentileFunc, precision, position)
+                : new ApproxPercentileLongGroupByFunction(exprFunc, percentileFunc, precision, position);
     }
 }

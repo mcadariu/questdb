@@ -60,6 +60,8 @@ public class ApproxPercentileLongGroupByDefaultFunctionFactory implements Functi
 
         checkPercentile(percentileFunc, argPositions.getQuick(1));
 
-        return new ApproxPercentileLongGroupByFunction(exprFunc, percentileFunc, DEFAULT_PRECISION, position);
+        return ApproxPercentileLongGroupByFunctionFactory.useParallel
+                ? new ApproxPercentileLongParallelGroupByFunction(exprFunc, percentileFunc, DEFAULT_PRECISION, position)
+                : new ApproxPercentileLongGroupByFunction(exprFunc, percentileFunc, DEFAULT_PRECISION, position);
     }
 }
