@@ -52,10 +52,8 @@ public class ApproxPercentileLongParallelGroupByFunction extends DoubleFunction 
         this.exprFunc = exprFunc;
         this.percentileFunc = percentileFunc;
         this.funcPosition = funcPosition;
-        this.histogramA = new GroupByHistogram(1, 1000, precision);
-        this.histogramA.setAutoResize(true);
-        this.histogramB = new GroupByHistogram(1, 1000, precision);
-        this.histogramB.setAutoResize(true);
+        this.histogramA = new GroupByHistogram(precision);
+        this.histogramB = new GroupByHistogram(precision);
     }
 
     @Override
