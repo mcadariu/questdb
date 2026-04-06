@@ -50,9 +50,9 @@ public class ApproxPercentileParallelBenchmarkTest extends AbstractCairoTest {
         int[] workerCounts = {1, 2, 4, 8};
         int[] partitionCounts = {8, 16, 32, 64};
 
-        try (PrintWriter writer = new PrintWriter(new FileWriter("benchmark_results.txt"))) {
-            writer.println("Partitions | Workers | master(ms) | branch(ms) | Speedup");
-            writer.println("-----------|---------|------------|------------|--------");
+        try (PrintWriter writer = new PrintWriter(new FileWriter("benchmark_results.md"))) {
+            writer.println("| Partitions | Workers | master(ms) | branch(ms) | Speedup |");
+            writer.println("|------------|---------|------------|------------|---------|");
 
             for (int partitions : partitionCounts) {
                 for (int workers : workerCounts) {
@@ -62,7 +62,7 @@ public class ApproxPercentileParallelBenchmarkTest extends AbstractCairoTest {
                     ApproxPercentileLongGroupByFunctionFactory.useParallel = true;
                     double branchMs = runBenchmark(workers, partitions);
 
-                    writer.printf("%10d | %7d | %10.2f | %10.2f | %.2fx%n",
+                    writer.printf("| %d | %d | %.2f | %.2f | %.2fx |%n",
                             partitions, workers, masterMs, branchMs, masterMs / branchMs);
                 }
             }
