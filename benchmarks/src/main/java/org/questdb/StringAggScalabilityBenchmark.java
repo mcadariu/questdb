@@ -46,21 +46,22 @@ import java.util.stream.Stream;
 
 public class StringAggScalabilityBenchmark {
 
-    private static final int GROUP_COUNT = 10;
-    private static final int MEASUREMENT_ITERATIONS = 5;
-    private static final int ROW_COUNT = 1_000_000;
-    private static final int WARMUP_ITERATIONS = 2;
+    private static final int GROUP_COUNT = Integer.getInteger("groupCount", 10);
+    private static final int MEASUREMENT_ITERATIONS = Integer.getInteger("measurementIterations", 5);
+    private static final int ROW_COUNT = Integer.getInteger("rowCount", 1_000_000);
+    private static final int WARMUP_ITERATIONS = Integer.getInteger("warmupIterations", 2);
     private static final int[] WORKER_COUNTS = {1, 2, 4, 8};
 
     public static void main(String[] args) throws Exception {
-        System.out.printf("%8s %10s%n", "workers", "speedup");
+        System.out.printf("PARAMS rowCount=%d groupCount=%d%n", ROW_COUNT, GROUP_COUNT);
+        System.out.printf("%8s %10s %10s%n", "workers", "ms", "speedup");
         double baselineMs = -1;
         for (int workers : WORKER_COUNTS) {
             double timeMs = run(workers);
             if (baselineMs < 0) {
                 baselineMs = timeMs;
             }
-            System.out.printf("%8d %9.2fx%n", workers, baselineMs / timeMs);
+            System.out.printf("RESULT rowCount=%d groupCount=%d workers=%d ms=%.2f speedup=%.2fx%n", ROW_COUNT, GROUP_COUNT, workers, timeMs, baselineMs / timeMs);
         }
     }
 
